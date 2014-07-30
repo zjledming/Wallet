@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
+
 public class Tomcat {
 
 	public static String tomcatPath = "E:\\tomcat-6.0";
@@ -23,55 +25,85 @@ public class Tomcat {
 	 * @param projectPath
 	 * @return
 	 */
-	public boolean config(String tomcatPath, String projectPath) {
-		try {
-			System.out.println(tomcatPath + projectPath);// E:\tomcat-6.0  E:\workspace\hyxfs-core\creatorepp
-			
-			
-			/*
-			 * 导出jar之后路径获取错误，发生异常：
-			 * java.io.FileNotFoundException: file:\C:\Users\ android\Desktop\TomcatTool.jar!\ fxm\tom\ util\creatorepp.xml (文件名、目录名或卷标语法不正确。)
-			 */
-			// 获取配置文件内容，给项目路径赋值，例如：E:\workspace\hyxfs-core\creatorepp
-//			String localPath = getCurrentClassPath();
-//			System.out.println(localPath);
-//			String content = read(new File(localPath.substring(0,
-//					localPath.lastIndexOf("\\")), "creatorepp.xml"));
-			
-			// 改成string字符串
-			String content = "<?xml version=\"1.0\" encoding=\"gbk\"?><Context crossContext=\"true\"    path=\"/creatorepp\"    docBase=\"PROPATH\"    reloadable=\"false\">    <ResourceLink name=\"reportsource\" global=\"reportsource\" type=\"javax.sql.DataSource\"/></Context>";
-			content = content.replace("PROPATH", projectPath);
-			// 生成新的配置文件 conf\Catalina\localhost
-			String confPath = tomcatPath + f + "conf" + f + "Catalina" + f
-					+ "localhost" + f + "creatorepp.xml";
-			File configFile = new File(confPath);
-			if (!configFile.exists()) {
-				configFile.mkdirs();
-			}
-			// 替换文件内容
-			writeStr2File(configFile, content);
-		} catch (Exception e) {
-			// TODO: handle exception
-			return false;
+	public boolean config(String tomcatPath, String projectPath)
+			throws Exception {
+		System.out.println(tomcatPath + projectPath);// E:\tomcat-6.0
+														// E:\workspace\hyxfs-core\creatorepp
+
+		/*
+		 * 导出jar之后路径获取错误，发生异常： java.io.FileNotFoundException: file:\C:\Users\
+		 * android\Desktop\TomcatTool.jar!\ fxm\tom\ util\creatorepp.xml
+		 * (文件名、目录名或卷标语法不正确。)
+		 */
+		// 获取配置文件内容，给项目路径赋值，例如：E:\workspace\hyxfs-core\creatorepp
+		// String localPath = getCurrentClassPath();
+		// System.out.println(localPath);
+		// String content = read(new File(localPath.substring(0,
+		// localPath.lastIndexOf("\\")), "creatorepp.xml"));
+
+		// 改成string字符串
+		// String content =
+		// "<?xml version=\"1.0\" encoding=\"gbk\"?><Context crossContext=\"true\"    path=\"/creatorepp\"    docBase=\"PROPATH\"    reloadable=\"false\">    <ResourceLink name=\"reportsource\" global=\"reportsource\" type=\"javax.sql.DataSource\"/></Context>";
+		// content = content.replace("PROPATH", projectPath);
+		// // 生成新的配置文件 conf\Catalina\localhost
+		// String confPath = tomcatPath + f + "conf" + f + "Catalina" + f
+		// + "localhost" + f + "creatorepp.xml";
+		// File configFile = new File(confPath);
+		// if (!configFile.exists()) {
+		// configFile.mkdirs();
+		// }
+		// 替换文件内容
+		// writeStr2File(configFile, content);
+
+		/***************** 重写该功能 *****************/
+		// 1.定位配置文件creatorepp.xml，如果不存在，创建
+		String configFolder = tomcatPath + f + "conf" + f + "Catalina" + f
+				+ "localhost";
+		File folder = new File(configFolder);
+		if (!folder.exists()) {
+			folder.mkdirs();
 		}
+		File file = new File(folder, "creatorepp.xml");
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		// 2.清空配置
+		FileUtils.writeStringToFile(file, "");
+		// 3.重写配置
+		write2log("<?xml version=\"1.0\" encoding=\"gbk\"?>", file);
+		write2log(
+				"<Context crossContext=\"true\" path=\"/creatorepp\" docBase=\""
+						+ projectPath + "\" reloadable=\"false\">", file);
+		write2log(
+				"\t<ResourceLink name=\"reportsource\" global=\"reportsource\" type=\"javax.sql.DataSource\" />",
+				file);
+		write2log("</Context>", file);
 		return true;
 	}
-	
+
+	public static void write2log(String data, File file) throws IOException {
+		FileWriter fileWriter = new FileWriter(file, true);
+		fileWriter.write(data + "\r\n");
+		fileWriter.close();
+	}
+
 	/**
 	 * 清楚tomcat缓存
+	 * 
 	 * @param tomcatPath
 	 * @return
 	 */
-	public boolean clear(String tomcatPath) {
-		try {
-			System.out.println(tomcatPath);// E:\tomcat-6.0
+	public boolean clear(String tomcatPath) throws Exception {
+		System.out.println(tomcatPath);// E:\tomcat-6.0
+		File file = new File(tomcatPath,"work");
+		if (file.exists()) {
 			tomcatPath = tomcatPath.replace("\\", "\\\\");
 			System.out.println(tomcatPath);// E:\tomcat-6.0
 			// "cmd /c rd/s/q e:\\tomcat-6.0\\work"
-			String cmdStr = "cmd /c rd/s/q "+tomcatPath+"\\work" ;
+			String cmdStr = "cmd /c rd/s/q " + tomcatPath + "\\work";
 			Runtime.getRuntime().exec(cmdStr);
-		} catch (Exception e) {
-			return false;
+		}else {
+//			throw new Exception("缓存文件【"+file.getAbsolutePath()+"】不存在，请检查tomcat路径是否正确！");
 		}
 		return true;
 	}
@@ -182,7 +214,6 @@ public class Tomcat {
 		return sb.toString();
 	}
 
-
 	public static void main(String[] args) {
 		Tomcat t = new Tomcat();
 		try {
@@ -203,6 +234,7 @@ public class Tomcat {
 	public void start(String tomcatPath) throws Exception {
 		File startUpFile = new File(tomcatPath, "bin\\startup.bat");
 		String path = startUpFile.getPath().replace("\\", "\\\\");
-		Runtime.getRuntime().exec("cmd.exe /k start " + path);;
+		Runtime.getRuntime().exec("cmd.exe /k start " + path);
+		;
 	}
 }

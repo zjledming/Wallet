@@ -1,5 +1,4 @@
 package fxm.tom.main;
-
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,36 +16,257 @@ import javax.swing.border.EmptyBorder;
 import fxm.tom.util.Tomcat;
 
 public class MainDialog extends JFrame {
+
 	private static final long serialVersionUID = 1L;
-	// çª—ä½“æ ‡é¢˜
-	private String title;
-	// è®¾ç½®æ­¤çª—ä½“æ˜¯å¦å¯ç”±ç”¨æˆ·è°ƒæ•´å¤§å°ã€‚
-	private boolean resizable;
-
+	// Ö÷panel
 	private JPanel contentPane;
-	private JTextField tomcatPath;
-	private JTextField projectPath;
+	// ÎÄ±¾¿ò
+	private JTextField tomcatPath = new JTextField();
+	private JTextField projectPath = new JTextField();
 
-	// private JTextField userName1;
-	// private JTextField pwd1;
-
+	// Ñ¡ÔñÆ÷
 	JFileChooser chooser;
+
+	// x,y,w,h - ³õÊ¼´óĞ¡
+	int ix = 400;
+	int iy = 200;
+	int iwidth = 480;
+	int iheight = 230;
+
+	// µÚÒ»ĞĞµÚÒ»ÁĞ±í¸ñÍ·²¿Î»ÖÃ25, 30, 110, 15
+	int tx = 25;
+	int ty = 30;
+	int twidth = 80;
+	int theight = 21;
+
+	// ÎÄ±¾¿ò¿í¶È
+	int inputwidth = 250;
+	// select but ¿í¶È
+	int swidth = 60;
+
+	/**
+	 * ÉèÖÃ±í¸ñÍ·²¿£¬Ã¿¶àÒ»ĞĞ£¬x²»±ä£¬y+40£¬w,h²»±ä
+	 * 
+	 * @param herdText
+	 *            ÎÄ±¾
+	 * @param index
+	 *            µÚ¼¸ĞĞÍ·²¿£¬´Óindex=1¿ªÊ¼
+	 */
+	public void setHeader(String herdText, int index) {
+		// ¶àÁËnĞĞ
+		int n = index - 1;
+		JLabel label = new JLabel(herdText);
+		label.setBounds(tx, ty + 40 * n, twidth, theight);
+		this.contentPane.add(label);
+	}
+
+	/**
+	 * ÉèÖÃ±í¸ñÎÄ±¾¿ò£¬Ã¿¶àÒ»ĞĞ£¬x²»±ä£¬y+40£¬w,h²»±ä
+	 * 
+	 * @param jTextField
+	 *            ²Ù×÷¿Ø¼ş
+	 * @param index
+	 *            µÚ¼¸ĞĞÎÄ±¾£¬´Óindex=1¿ªÊ¼
+	 */
+	public void setText(JTextField jTextField, int index, String text) {
+		// ¶àÁËnĞĞ
+		int n = index - 1;
+		// jTextField = new JTextField();
+		// xÎ»ÖÃÎª±ß½ç+±íÍ·²¿¿í¶È
+		jTextField.setBounds(tx + twidth, ty + 40 * n, inputwidth, theight);
+		// ÉèÖÃ´Ë TextField ÖĞµÄÁĞÊı£¬È»ºóÑéÖ¤²¼¾Ö
+		jTextField.setColumns(10);
+		jTextField.setText(text);
+		this.contentPane.add(jTextField);
+	}
+
+	/**
+	 * ÉèÖÃ±í¸ñ°´Å¥£¬Ã¿¶àÒ»ĞĞ£¬x²»±ä£¬y+40£¬w,h²»±ä
+	 * 
+	 * @param butText
+	 *            °´Å¥Ãû³Æ
+	 * @param index
+	 *            µÚ¼¸ĞĞ°´Å¥£¬´Óindex=1¿ªÊ¼
+	 */
+	public void setSelect(String butText, final int index) {
+		JButton jb = new JButton(butText);
+		jb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				invoke(index);
+			}
+		});
+		// ¶àÁËnĞĞ
+		int n = index - 1;
+		// xÎ»ÖÃÎª±ß½ç+±íÍ·²¿¿í¶È+ÎÄ±¾¿ò¿í¶È+10£¨¸ô¿ªÒ»¶¨¾àÀë£©
+		jb.setBounds(tx + twidth + inputwidth + 10, ty + 40 * n, swidth,
+				theight);
+		this.contentPane.add(jb);
+	}
+
+	/**
+	 * µã»÷"Ñ¡Ôñ"°´Å¥ÊÂ¼ş
+	 * 
+	 * @param index
+	 */
+	public String invoke(int index) {
+		try {
+			if (index == 10000) {
+				// ²¿Êğ
+				if ((MainDialog.this.projectPath.getText().length() > 0)
+						&& (MainDialog.this.tomcatPath.getText().length() > 0)) {
+					new Tomcat().config(MainDialog.this.tomcatPath.getText(),
+							MainDialog.this.projectPath.getText());
+					JOptionPane.showMessageDialog(MainDialog.this,"²¿Êğ³É¹¦£¡");
+					invoke(10001);
+				} else {
+					// ÌáÊ¾¿ò
+					JOptionPane.showMessageDialog(MainDialog.this,
+							"ÇëÑ¡ÔñtomcatÂ·¾¶ºÍÏîÄ¿Â·¾¶£¡");
+				}
+			}else if (index == 10001) {
+				// ÇåÀí»º´æ
+				if ((MainDialog.this.projectPath.getText().length() > 0)
+						&& (MainDialog.this.tomcatPath.getText().length() > 0)) {
+					try {
+						new Tomcat().clear(MainDialog.this.tomcatPath.getText());
+						JOptionPane.showMessageDialog(MainDialog.this,
+								"ÇåÀí»º´æ³É¹¦£¡" );
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(MainDialog.this,
+								"ÇåÀí»º´æÊ§°Ü£¬³ÌĞò·¢ÉúÒì³££º" + e.getMessage());
+					}
+				} else {
+					// ÌáÊ¾¿ò
+					JOptionPane.showMessageDialog(MainDialog.this,
+							"ÇëÑ¡ÔñtomcatÂ·¾¶£¡");
+				}
+			} else {
+				// Ñ¡Ôñ
+				JTextField jField = null;
+				String currentDirectory = "";
+				String dialogTitle = "";
+				if (index == 1) {
+					jField = MainDialog.this.tomcatPath;
+					currentDirectory = fxm.tom.util.Tomcat.tomcatPath;
+					dialogTitle = "ÇëÑ¡ÔñtomcatÂ·¾¶";
+				} else if (index == 2) {
+					jField = MainDialog.this.projectPath;
+					currentDirectory = fxm.tom.util.Tomcat.projectPath;
+					dialogTitle = "ÇëÑ¡ÔñÏîÄ¿Â·¾¶";
+				}
+				chooser = new JFileChooser();
+				chooser.setCurrentDirectory(new java.io.File(currentDirectory));
+				chooser.setDialogTitle(dialogTitle);
+				// ÉèÖÃ JFileChooser£¬ÒÔÔÊĞíÓÃ»§Ö»Ñ¡ÔñÎÄ¼ş¡¢Ö»Ñ¡ÔñÄ¿Â¼£¬»òÕß¿ÉÑ¡ÔñÎÄ¼şºÍÄ¿Â¼
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // ÕâÀïÑ¡ÔñÄ¿Â¼
+				// È·¶¨ÊÇ·ñ½« AcceptAll FileFilter ÓÃ×÷¿ÉÑ¡Ôñ¹ıÂËÆ÷ÁĞ±íÖĞÒ»¸ö¿ÉÓÃÑ¡Ïî¡£
+				chooser.setAcceptAllFileFilterUsed(false);
+				if (chooser.showOpenDialog(contentPane) == JFileChooser.APPROVE_OPTION) {
+					// ·µ»ØÑ¡ÖĞµÄÎÄ¼ş
+					File selectfile = chooser.getSelectedFile();
+					// ¸øtomcatÂ·¾¶¸³Öµ
+					jField.setText(selectfile.getAbsolutePath());
+				} else {
+					System.out.println("No Selection ");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(MainDialog.this,
+					"²¿ÊğÊ§°Ü£¬³ÌĞò·¢ÉúÒì³££º" + e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * µ¥¸ö°´Å¥<br>
+	 * ÉèÖÃ°´Å¥£¬µ¹ÊıµÚ¶şĞĞ£¬¾ÓÖĞ¶ÔÆë
+	 * 
+	 * @param butText
+	 */
+	public void setButton(String butText) {
+		// ÉèÖÃ°´Å¥¿í¸ß,Ã¿2¸ö×ÖÕ¼60
+		int bwidth = (butText.length() / 2) * 60;
+
+		JButton button = new JButton(butText);
+		/*
+		 * ½«Ò»¸ö ActionListener Ìí¼Óµ½°´Å¥ÖĞ;
+		 * ÓÃÓÚ½ÓÊÕ²Ù×÷ÊÂ¼şµÄÕìÌıÆ÷½Ó¿Ú¡£¶Ô´¦Àí²Ù×÷ÊÂ¼ş¸ĞĞËÈ¤µÄÀà¿ÉÒÔÊµÏÖ´Ë½Ó¿Ú£¬¶øÊ¹ÓÃ¸ÃÀà´´½¨µÄ¶ÔÏó¿ÉÊ¹ÓÃ×é¼şµÄ addActionListener
+		 * ·½·¨Ïò¸Ã×é¼ş×¢²á¡£ÔÚ·¢Éú²Ù×÷ÊÂ¼şÊ±£¬µ÷ÓÃ¸Ã¶ÔÏóµÄ actionPerformed ·½·¨¡£
+		 */
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				invoke(10000);
+			}
+		});
+		System.out.println(iheight);
+		// button.setBounds(ix+iwidth/2-bwidth/2, iy+iheight-2*theight, bwidth,
+		// theight);
+		// °´Å¥µÄx.y¶¼ÊÇÏà¶Ô´°Ìå±¾Éí±ß½ç£¬²»ÊÇÏÔÊ¾ÆÁµÄ±ß½ç£¨¼õÈ¥titleµÄ¿í¶È£©
+		button.setBounds(iwidth / 2 - bwidth / 2 - 5, iheight - 30 - 4
+				* theight, bwidth, theight);
+		this.contentPane.add(button);
+	}
+	
+	int butWidth = 90;
+	/**
+	 * ¶à¸ö°´Å¥<br>
+	 * ÉèÖÃ°´Å¥£¬µ¹ÊıµÚ¶şĞĞ£¬¾ÓÖĞ¶ÔÆë
+	 * @param butText
+	 */
+	public void setButton(String[] butText) {
+		int butx0 = (iwidth - butText.length * butWidth - 30) / 2;
+		for (int i = 0; i < butText.length; i++) {
+			JButton button = new JButton(butText[i]);
+			/*
+			 * ½«Ò»¸ö ActionListener Ìí¼Óµ½°´Å¥ÖĞ;
+			 * ÓÃÓÚ½ÓÊÕ²Ù×÷ÊÂ¼şµÄÕìÌıÆ÷½Ó¿Ú¡£¶Ô´¦Àí²Ù×÷ÊÂ¼ş¸ĞĞËÈ¤µÄÀà¿ÉÒÔÊµÏÖ´Ë½Ó¿Ú£¬¶øÊ¹ÓÃ¸ÃÀà´´½¨µÄ¶ÔÏó¿ÉÊ¹ÓÃ×é¼şµÄ
+			 * addActionListener ·½·¨Ïò¸Ã×é¼ş×¢²á¡£ÔÚ·¢Éú²Ù×÷ÊÂ¼şÊ±£¬µ÷ÓÃ¸Ã¶ÔÏóµÄ actionPerformed ·½·¨¡£
+			 */
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (e.getActionCommand().equals("²¿	  Êğ")) {
+						invoke(10000);
+					}else if (e.getActionCommand().equals("ÇåÀí»º´æ")) {
+						invoke(10001);
+					}
+				}
+			});
+			// °´Å¥µÄx.y¶¼ÊÇÏà¶Ô´°Ìå±¾Éí±ß½ç£¬²»ÊÇÏÔÊ¾ÆÁµÄ±ß½ç£¨¼õÈ¥titleµÄ¿í¶È£©
+			System.out.println(butx0);
+			button.setBounds(butx0 + i * (butWidth + 30), iheight - 30 - 4
+					* theight, butWidth, theight);
+			this.contentPane.add(button);
+
+		}
+
+	}
+
+	/**
+	 * °æÈ¨ËµÃ÷
+	 */
+	public void setMadeBy() {
+		JLabel label = new JLabel("made by ximing.fu °æÈ¨ËùÓĞ.");
+		label.setBounds((int) (iwidth * 0.57), iheight - 30 - 2 * theight, 185,
+				theight);
+		this.contentPane.add(label);
+	}
 
 	public static void main(String[] args) {
 		/*
-		 * ç†è§£1ï¼šï¼ˆå¾ˆæœ‰é“ç†ï¼Œå®‰å…¨å¹¶ä¸”èŠ‚çœå†…å­˜ï¼‰
-		 * ä½¿ç”¨eventqueue.invokelater()å¥½å¤„æ˜¯æ˜¾è€Œæ˜“è§çš„ï¼Œè¿™ä¸ªæ–¹æ³•è°ƒç”¨å®Œæ¯•åï¼Œå®ƒä¼šè¢«é”€æ¯ï¼Œå› ä¸ºåŒ¿åå†…éƒ¨ç±»æ˜¯ä½œä¸ºä¸´æ—¶å˜é‡å­˜åœ¨çš„ï¼Œ
-		 * ç»™å®ƒåˆ†é…çš„å†…å­˜åœ¨æ­¤æ—¶ä¼šè¢«é‡Šæ”¾
-		 * ã€‚è¿™ä¸ªå¯¹äºåªéœ€è¦åœ¨ä¸€ä¸ªåœ°æ–¹ä½¿ç”¨æ—¶å¯ä»¥èŠ‚çœå†…å­˜ï¼Œè€Œä¸”è¿™ä¸ªç±»æ˜¯ä¸å¯ä»¥è¢«å…¶å®ƒçš„æ–¹æ³•æˆ–ç±»ä½¿ç”¨çš„ï¼Œåªèƒ½è¢«EventQueue
+		 * Àí½â1£º£¨ºÜÓĞµÀÀí£¬°²È«²¢ÇÒ½ÚÊ¡ÄÚ´æ£©
+		 * Ê¹ÓÃeventqueue.invokelater()ºÃ´¦ÊÇÏÔ¶øÒ×¼ûµÄ£¬Õâ¸ö·½·¨µ÷ÓÃÍê±Ïºó£¬Ëü»á±»Ïú»Ù£¬ÒòÎªÄäÃûÄÚ²¿ÀàÊÇ×÷ÎªÁÙÊ±±äÁ¿´æÔÚµÄ£¬
+		 * ¸øËü·ÖÅäµÄÄÚ´æÔÚ´ËÊ±»á±»ÊÍ·Å
+		 * ¡£Õâ¸ö¶ÔÓÚÖ»ĞèÒªÔÚÒ»¸öµØ·½Ê¹ÓÃÊ±¿ÉÒÔ½ÚÊ¡ÄÚ´æ£¬¶øÇÒÕâ¸öÀàÊÇ²»¿ÉÒÔ±»ÆäËüµÄ·½·¨»òÀàÊ¹ÓÃµÄ£¬Ö»ÄÜ±»EventQueue
 		 * .invokeLater(
-		 * )æ¥ä½¿ç”¨ã€‚ä½†å¦‚æœä½ éœ€è¦ä¸€ä¸ªåœ¨å¾ˆå¤šåœ°æ–¹éƒ½èƒ½ç”¨åˆ°çš„ç±»ï¼Œè€Œä¸æ˜¯åªåœ¨æŸä¸€ä¸ªç±»é‡Œé¢æˆ–è€…æ–¹æ³•é‡Œç”¨çš„è¯ï¼Œå®šä¹‰æˆåŒ¿åå†…éƒ¨ç±»æ˜¾ç„¶æ˜¯ä¸å¯å–çš„ã€‚
-		 * æ˜¯ï¼Œrunnableæ˜¯è·Ÿçº¿ç¨‹ç›¸å…³çš„ç±»ã€‚
+		 * )À´Ê¹ÓÃ¡£µ«Èç¹ûÄãĞèÒªÒ»¸öÔÚºÜ¶àµØ·½¶¼ÄÜÓÃµ½µÄÀà£¬¶ø²»ÊÇÖ»ÔÚÄ³Ò»¸öÀàÀïÃæ»òÕß·½·¨ÀïÓÃµÄ»°£¬¶¨Òå³ÉÄäÃûÄÚ²¿ÀàÏÔÈ»ÊÇ²»¿ÉÈ¡µÄ¡£
+		 * ÊÇ£¬runnableÊÇ¸úÏß³ÌÏà¹ØµÄÀà¡£
 		 * 
-		 * ç†è§£2ï¼š æŠŠè¿™ä¸ªäº‹ä»¶ï¼ˆnew Runnable())æ·»åŠ åˆ°awtçš„äº‹ä»¶å¤„ç†çº¿ç¨‹å½“ä¸­å»
-		 * awtçš„äº‹ä»¶å¤„ç†çº¿ç¨‹ä¼šæŒ‰ç…§é˜Ÿåˆ—çš„é¡ºåºä¾æ¬¡è°ƒç”¨æ¯ä¸ªå¾…å¤„ç†çš„äº‹ä»¶æ¥è¿è¡Œ
-		 * ä½¿ç”¨è¯¥æ–¹å¼çš„åŸå› æ˜¯ï¼šawtæ˜¯å•çº¿ç¨‹æ¨¡å¼çš„ï¼Œæ‰€æœ‰awtçš„ç»„ä»¶åªèƒ½åœ¨(æ¨èæ–¹å¼)äº‹ä»¶å¤„ç†çº¿ç¨‹ä¸­è®¿é—®ï¼Œä»è€Œä¿è¯ç»„ä»¶çŠ¶æ€çš„å¯ç¡®å®šæ€§ã€‚
+		 * Àí½â2£º °ÑÕâ¸öÊÂ¼ş£¨new Runnable())Ìí¼Óµ½awtµÄÊÂ¼ş´¦ÀíÏß³Ìµ±ÖĞÈ¥
+		 * awtµÄÊÂ¼ş´¦ÀíÏß³Ì»á°´ÕÕ¶ÓÁĞµÄË³ĞòÒÀ´Îµ÷ÓÃÃ¿¸ö´ı´¦ÀíµÄÊÂ¼şÀ´ÔËĞĞ
+		 * Ê¹ÓÃ¸Ã·½Ê½µÄÔ­ÒòÊÇ£ºawtÊÇµ¥Ïß³ÌÄ£Ê½µÄ£¬ËùÓĞawtµÄ×é¼şÖ»ÄÜÔÚ(ÍÆ¼ö·½Ê½)ÊÂ¼ş´¦ÀíÏß³ÌÖĞ·ÃÎÊ£¬´Ó¶ø±£Ö¤×é¼ş×´Ì¬µÄ¿ÉÈ·¶¨ĞÔ¡£
 		 * 
-		 * æ³¨ï¼šawt:æŠ½è±¡çª—å£å·¥å…·åŒ… ï¼ˆAbstract Windowing Toolkitï¼‰
+		 * ×¢£ºawt:³éÏó´°¿Ú¹¤¾ß°ü £¨Abstract Windowing Toolkit£©
 		 */
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -61,194 +281,44 @@ public class MainDialog extends JFrame {
 	}
 
 	public MainDialog() {
-		setTitle("tomcat tool");
-		// è®¾ç½®æ­¤çª—ä½“æ˜¯å¦å¯ç”±ç”¨æˆ·è°ƒæ•´å¤§å°ã€‚
-		setResizable(false);
-		// è®¾ç½®ç”¨æˆ·åœ¨æ­¤çª—ä½“ä¸Šå‘èµ· "close" æ—¶é»˜è®¤æ‰§è¡Œçš„æ“ä½œ
+		setTitle("tomcat²¿Êğ¹¤¾ß");
+		// ÉèÖÃ´Ë´°ÌåÊÇ·ñ¿ÉÓÉÓÃ»§µ÷Õû´óĞ¡¡£
+		setResizable(true);
+		// ÉèÖÃÓÃ»§ÔÚ´Ë´°ÌåÉÏ·¢Æğ "close" Ê±Ä¬ÈÏÖ´ĞĞµÄ²Ù×÷
 		setDefaultCloseOperation(3);
 		/*
-		 * (int x, int y, int width, int height)ç§»åŠ¨ç»„ä»¶å¹¶è°ƒæ•´å…¶å¤§å°ï¼Œä½¿å…¶ç¬¦åˆæ–°çš„æœ‰ç•ŒçŸ©å½¢ rã€‚ç”± r.x å’Œ
-		 * r.y æŒ‡å®šç»„ä»¶çš„æ–°ä½ç½®ï¼Œç”± r.width å’Œ r.height æŒ‡å®šç»„ä»¶çš„æ–°å¤§å° å¦‚æœ r.width å€¼æˆ– r.height
-		 * å€¼å°äºä¹‹å‰è°ƒç”¨ setMinimumSize æŒ‡å®šçš„æœ€å°å¤§å°ï¼Œåˆ™å®ƒçš„å€¼å°†è‡ªåŠ¨å¢åŠ ã€‚
+		 * (int x, int y, int width, int height)ÒÆ¶¯×é¼ş²¢µ÷ÕûÆä´óĞ¡£¬Ê¹Æä·ûºÏĞÂµÄÓĞ½ç¾ØĞÎ r¡£ÓÉ r.x ºÍ
+		 * r.y Ö¸¶¨×é¼şµÄĞÂÎ»ÖÃ£¬ÓÉ r.width ºÍ r.height Ö¸¶¨×é¼şµÄĞÂ´óĞ¡ Èç¹û r.width Öµ»ò r.height
+		 * ÖµĞ¡ÓÚÖ®Ç°µ÷ÓÃ setMinimumSize Ö¸¶¨µÄ×îĞ¡´óĞ¡£¬ÔòËüµÄÖµ½«×Ô¶¯Ôö¼Ó¡£
 		 */
-		
-		setBounds(400, 200, 478, 306);
+		setBounds(ix, iy, iwidth, iheight);
 		this.contentPane = new JPanel();
 		// setBorder
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// è®¾ç½® contentPane å±æ€§
+		// ÉèÖÃ contentPane ÊôĞÔ
 		setContentPane(this.contentPane);
-		// è®¾ç½®æ­¤å®¹å™¨çš„å¸ƒå±€ç®¡ç†å™¨
+		// ÉèÖÃ´ËÈİÆ÷µÄ²¼¾Ö¹ÜÀíÆ÷
 		this.contentPane.setLayout(null);
 
-		JLabel label = new JLabel("tomcatè·¯å¾„ï¼š");
-		label.setBounds(25, 30, 110, 15);
-		this.contentPane.add(label);
+		// µÚÒ»ĞĞÍ·²¿
+		setHeader("tomcatÂ·¾¶£º", 1);
+		// µÚ¶şĞĞÍ·²¿
+		setHeader("ÏîÄ¿Â·¾¶£º", 2);
 
-		// é€‰æ‹©tomcatæŒ‰é’®
-		JButton jb = new JButton("é€‰æ‹©");
-		jb.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result;
-				chooser = new JFileChooser();
-				// è®¾ç½®å½“å‰ç›®å½• - é»˜è®¤æŒ‡å‘tomcaté»˜è®¤è·¯å¾„
-				// chooser.setCurrentDirectory(new java.io.File("."));
-				chooser.setCurrentDirectory(new java.io.File(
-						fxm.tom.util.Tomcat.tomcatPath));
-				chooser.setDialogTitle("è¯·é€‰æ‹©tomcatè·¯å¾„");
-				// è®¾ç½® JFileChooserï¼Œä»¥å…è®¸ç”¨æˆ·åªé€‰æ‹©æ–‡ä»¶ã€åªé€‰æ‹©ç›®å½•ï¼Œæˆ–è€…å¯é€‰æ‹©æ–‡ä»¶å’Œç›®å½•
-				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // è¿™é‡Œé€‰æ‹©ç›®å½•
-				// ç¡®å®šæ˜¯å¦å°† AcceptAll FileFilter ç”¨ä½œå¯é€‰æ‹©è¿‡æ»¤å™¨åˆ—è¡¨ä¸­ä¸€ä¸ªå¯ç”¨é€‰é¡¹ã€‚
-				chooser.setAcceptAllFileFilterUsed(false);
-				// å¼¹å‡ºä¸€ä¸ª "Open File" æ–‡ä»¶é€‰æ‹©å™¨å¯¹è¯æ¡†ï¼ŒAPPROVE_OPTIONï¼šé€‰æ‹©ç¡®è®¤ï¼ˆyesã€okï¼‰åè¿”å›è¯¥å€¼
-				if (chooser.showOpenDialog(contentPane) == JFileChooser.APPROVE_OPTION) {
-					// è¿”å›å½“å‰ç›®å½•
-					System.out.println("getCurrentDirectory(): "
-							+ chooser.getCurrentDirectory());
-					// è¿”å›é€‰ä¸­çš„æ–‡ä»¶
-					File selectfile = chooser.getSelectedFile();
-					System.out.println("getSelectedFile() : " + selectfile);
-					// ç»™tomcatè·¯å¾„èµ‹å€¼
-					MainDialog.this.tomcatPath.setText(selectfile
-							.getAbsolutePath());
-				} else {
-					System.out.println("No Selection ");
-				}
-			}
-		});
-		jb.setBounds(390, 27, 50, 21);
-		this.contentPane.add(jb);
+		// µÚÒ»ĞĞÎÄ±¾
+		setText(this.tomcatPath, 1, "E:\\tomcat-6.0");
+		// µÚ¶şĞĞÎÄ±¾
+		setText(this.projectPath, 2, "E:\\workspace\\hyxfs\\creatorepp");
 
-		JLabel label_1 = new JLabel("é¡¹ç›®è·¯å¾„ï¼š");
-		label_1.setBounds(25, 69, 110, 15);
-		this.contentPane.add(label_1);
+		// µÚÒ»ĞĞ°´Å¥
+		setSelect("Ñ¡Ôñ", 1);
+		setSelect("Ñ¡Ôñ", 2);
 
-		// é€‰æ‹©é¡¹ç›®æŒ‰é’®
-		jb = new JButton("é€‰æ‹©");
-		jb.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result;
-				chooser = new JFileChooser();
-				// è®¾ç½®å½“å‰ç›®å½•
-				// chooser.setCurrentDirectory(new java.io.File("."));
-				chooser.setCurrentDirectory(new java.io.File(
-						fxm.tom.util.Tomcat.projectPath));
-				chooser.setDialogTitle("è¯·é€‰æ‹©é¡¹ç›®è·¯å¾„");
-				// è®¾ç½® JFileChooserï¼Œä»¥å…è®¸ç”¨æˆ·åªé€‰æ‹©æ–‡ä»¶ã€åªé€‰æ‹©ç›®å½•ï¼Œæˆ–è€…å¯é€‰æ‹©æ–‡ä»¶å’Œç›®å½•
-				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // è¿™é‡Œé€‰æ‹©ç›®å½•
-				// ç¡®å®šæ˜¯å¦å°† AcceptAll FileFilter ç”¨ä½œå¯é€‰æ‹©è¿‡æ»¤å™¨åˆ—è¡¨ä¸­ä¸€ä¸ªå¯ç”¨é€‰é¡¹ã€‚
-				chooser.setAcceptAllFileFilterUsed(false);
-				// å¼¹å‡ºä¸€ä¸ª "Open File" æ–‡ä»¶é€‰æ‹©å™¨å¯¹è¯æ¡†ï¼ŒAPPROVE_OPTIONï¼šé€‰æ‹©ç¡®è®¤ï¼ˆyesã€okï¼‰åè¿”å›è¯¥å€¼
-				if (chooser.showOpenDialog(contentPane) == JFileChooser.APPROVE_OPTION) {
-					// è¿”å›å½“å‰ç›®å½•
-					System.out.println("getCurrentDirectory(): "
-							+ chooser.getCurrentDirectory());
-					// è¿”å›é€‰ä¸­çš„æ–‡ä»¶
-					File selectfile = chooser.getSelectedFile();
-					System.out.println("getSelectedFile() : " + selectfile);
-					// ç»™tomcatè·¯å¾„èµ‹å€¼
-					MainDialog.this.projectPath.setText(selectfile
-							.getAbsolutePath());
-				} else {
-					System.out.println("No Selection ");
-				}
-			}
-		});
-		jb.setBounds(390, 66, 50, 21);
-		this.contentPane.add(jb);
-
-		this.tomcatPath = new JTextField();
-		this.tomcatPath.setBounds(100, 27, 290, 21);
-		// è®¾ç½®æ­¤ TextField ä¸­çš„åˆ—æ•°ï¼Œç„¶åéªŒè¯å¸ƒå±€
-		this.tomcatPath.setColumns(10);
-		this.tomcatPath.setText(fxm.tom.util.Tomcat.tomcatPath);
-		this.contentPane.add(this.tomcatPath);
-
-		this.projectPath = new JTextField();
-		this.projectPath.setColumns(10);
-		this.projectPath.setBounds(100, 66, 290, 21);
-		this.projectPath.setText(fxm.tom.util.Tomcat.projectPath);
-		this.contentPane.add(this.projectPath);
-
-		JButton button = new JButton("é…ç½®");
-		/*
-		 * å°†ä¸€ä¸ª ActionListener æ·»åŠ åˆ°æŒ‰é’®ä¸­;
-		 * ç”¨äºæ¥æ”¶æ“ä½œäº‹ä»¶çš„ä¾¦å¬å™¨æ¥å£ã€‚å¯¹å¤„ç†æ“ä½œäº‹ä»¶æ„Ÿå…´è¶£çš„ç±»å¯ä»¥å®ç°æ­¤æ¥å£ï¼Œè€Œä½¿ç”¨è¯¥ç±»åˆ›å»ºçš„å¯¹è±¡å¯ä½¿ç”¨ç»„ä»¶çš„ addActionListener
-		 * æ–¹æ³•å‘è¯¥ç»„ä»¶æ³¨å†Œã€‚åœ¨å‘ç”Ÿæ“ä½œäº‹ä»¶æ—¶ï¼Œè°ƒç”¨è¯¥å¯¹è±¡çš„ actionPerformed æ–¹æ³•ã€‚
-		 */
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if ((MainDialog.this.projectPath.getText().length() > 0)
-						&& (MainDialog.this.tomcatPath.getText().length() > 0)) {
-					System.out.println(MainDialog.this.projectPath.getText()
-							+ MainDialog.this.tomcatPath.getText());
-					boolean flag = new Tomcat().config(
-							MainDialog.this.tomcatPath.getText(),
-							MainDialog.this.projectPath.getText());
-					if (flag) {
-						JOptionPane.showMessageDialog(MainDialog.this, "é…ç½®æˆåŠŸï¼");
-					}
-					flag = new Tomcat().clear(MainDialog.this.tomcatPath
-							.getText());
-					if (flag) {
-						JOptionPane.showMessageDialog(MainDialog.this,
-								"æ¸…é™¤ç¼“å­˜æˆåŠŸï¼");
-					}
-				} else {
-					// æç¤ºæ¡†
-					JOptionPane.showMessageDialog(MainDialog.this,
-							"è¯·é€‰æ‹©tomcatè·¯å¾„å’Œé¡¹ç›®è·¯å¾„ï¼");
-				}
-			}
-		});
-		button.setBounds(121, 116, 65, 21);
-		this.contentPane.add(button);
-
-		JButton button_1 = new JButton("æ¸…é™¤ç¼“å­˜");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (MainDialog.this.tomcatPath.getText().length() > 0) {
-					boolean flag = new Tomcat()
-							.clear(MainDialog.this.tomcatPath.getText());
-					if (flag) {
-						JOptionPane.showMessageDialog(MainDialog.this,
-								"æ¸…é™¤ç¼“å­˜æˆåŠŸï¼");
-					}
-				} else {
-					// æç¤ºæ¡†
-					JOptionPane.showMessageDialog(MainDialog.this,
-							"è¯·é€‰æ‹©tomcatè·¯å¾„ï¼");
-				}
-			}
-		});
-		button_1.setBounds(190, 116, 130, 21);
-		this.contentPane.add(button_1);
-
-		JButton button_2 = new JButton("å¯åŠ¨");
-		button_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (MainDialog.this.tomcatPath.getText().length() > 0) {
-					try {
-						new Tomcat().start(MainDialog.this.tomcatPath.getText());
-					} catch (Exception e2) {
-						e2.printStackTrace();
-						// æç¤ºæ¡†
-						JOptionPane.showMessageDialog(MainDialog.this,
-								"tomcatå¯åŠ¨å¤±è´¥ï¼");
-					}
-				} else {
-					JOptionPane.showMessageDialog(MainDialog.this,
-							"è¯·é€‰æ‹©tomcatè·¯å¾„ï¼");
-				}
-			}
-		});
-		button_2.setBounds(324, 116, 65, 21);
-		this.contentPane.add(button_2);
+		// ÉèÖÃ°´Å¥
+		//setButton();
+		setButton(new String[] {"²¿	  Êğ", "ÇåÀí»º´æ" });
 
 		// made by
-		JLabel label_madeBy = new JLabel("made by ximing.fu ç‰ˆæƒæ‰€æœ‰.");
-		label_madeBy.setBounds(284, 186, 165, 21);
-		this.contentPane.add(label_madeBy);
-
+		setMadeBy();
 	}
 }
