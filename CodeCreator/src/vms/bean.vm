@@ -1,0 +1,24 @@
+package $!{bean.packageUrl};
+
+/**
+ * $!{bean.beanRemark}实体bean
+ * @author $!{annotation.authorName}
+ * @date $!{annotation.date}
+ *
+ * @version $!{annotation.version}
+ */
+public class $!{bean.upperName}Bean{
+ 
+  #foreach($key in $!{bean.columnMap.keySet()})  
+  private String $key;
+  
+  public String get$!{bean.columnMap.get($key)}() {
+    return $key;
+  }
+
+  public void set$!{bean.columnMap.get($key)}(String $key) {
+    this.$key = $key;
+  }
+  #end
+
+}

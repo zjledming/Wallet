@@ -1,0 +1,70 @@
+package $!{bean.packageUrl};
+
+import $!{bean.beanUrl};
+import $!{bean.beanDaoUrl};
+import $!{bean.beanDaoImplUrl};
+import $!{bean.beanServiceUrl};
+import java.util.List;
+import java.util.ArrayList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * $!{bean.beanRemark}业务接口实现类
+ * @author $!{annotation.authorName}
+ * @date $!{annotation.date}
+ *
+ * @version $!{annotation.version}
+ */
+public class $!{bean.upperName}ServiceImpl implements $!{bean.upperName}Service{
+    
+    private static final Log LOG = LogFactory.getLog($!{bean.upperName}ServiceImpl.class.getName());
+  
+	/**
+	 * $!{bean.upperName} Dao
+	 */
+	private $!{bean.upperName}Dao $!{bean.upperName}Dao = new $!{bean.upperName}DaoImpl();
+	
+  @Override
+  public List<$!{bean.upperName}Bean> get$!{bean.upperName}ListBy($!{bean.upperName}Bean bean) {
+    List<$!{bean.upperName}Bean> list = new ArrayList<$!{bean.upperName}Bean>();
+    try {
+      list = $!{bean.upperName}Dao.get$!{bean.upperName}ListBy(bean);
+    } catch (Exception e) {
+      e.printStackTrace();
+      LOG.error(e);
+    }
+	return list;
+  }
+  
+  @Override
+  public void save$!{bean.upperName}($!{bean.upperName}Bean bean)  {
+    try {
+      $!{bean.upperName}Dao.save$!{bean.upperName}(bean);
+    } catch (Exception e) {
+      e.printStackTrace();
+      LOG.error(e);
+    }
+  }
+  
+  @Override
+  public void update$!{bean.upperName}($!{bean.upperName}Bean bean)  {
+    try {
+      $!{bean.upperName}Dao.update$!{bean.upperName}(bean);
+    } catch (Exception e) {
+      e.printStackTrace();
+      LOG.error(e);
+    }
+  }
+  
+  @Override
+  public void delete$!{bean.upperName}(String id)  {
+    try {
+      $!{bean.upperName}Dao.delete$!{bean.upperName}(id);
+    } catch (Exception e) {
+      e.printStackTrace();
+      LOG.error(e);
+    }
+  }
+	
+}

@@ -1,0 +1,113 @@
+package $!{bean.packageUrl};
+
+import $!{bean.stringutilUrl};
+import $!{bean.beanUrl};
+import $!{bean.beanDaoUrl};
+import java.util.List;
+import java.util.ArrayList;
+
+/**
+ * $!{bean.beanRemark}Dao接口实现类
+ * @author $!{annotation.authorName}
+ * @date $!{annotation.date}
+ *
+ * @version $!{annotation.version}
+ */
+public class $!{bean.upperName}DaoImpl implements $!{bean.upperName}Dao{
+  
+    private static StringBuffer getSQL = new StringBuffer();
+    private static StringBuffer saveSQL = new StringBuffer();
+    private static StringBuffer updateSQL = new StringBuffer();
+    private static StringBuffer deleteSQL = new StringBuffer();
+    private static String SEQ_$!{bean.name} = "SEQ_$!{bean.name}"; // 不规范序列命名，请手动修正
+  
+	/**
+	 * 外键数：$!{bean.pkMapList.size()}<br>
+	 *
+	#foreach( $column in $!{bean.pkMapList})
+	 * 外键：$column[0]——>主表：$column[1]，主表主键：$column[2]<br>
+	#end
+	 * 
+	 */
+    static {
+		getSQL.append("select ");
+        saveSQL.append("insert into $!{bean.name}($!{bean.pkName} ");
+        updateSQL.append("update $!{bean.name} t set ");
+        deleteSQL.append("delete from $!{bean.name} t where t.$!{bean.pkName}=?");
+			#foreach($key in $!{bean.columnMap.keySet()})
+        getSQL.append(" t.$key, ");
+			#if($!{bean.pkName} != ${bean.columnMap.get($key)})
+        saveSQL.append(" ,$key ");
+			#end
+        updateSQL.append(" t.$key=?, ");
+        #end
+        // 去掉末尾”,“
+        getSQL = new StringBuffer(getSQL.substring(0, getSQL.length()-2));
+        updateSQL = new StringBuffer(updateSQL.substring(0, updateSQL.length()-2));
+        
+        getSQL.append(" from $!{bean.name} t where 1=1 ");
+        saveSQL.append(" )values( "+SEQ_$!{bean.name}+".nextval");
+        updateSQL.append(" where t.$!{bean.pkName} = ? ");
+        #foreach($key in $!{bean.columnMap.keySet()}) 
+			#if($!{bean.pkName} != $key)
+        saveSQL.append(" ,? ");
+			#end
+        #end
+        saveSQL.append(")");
+    }
+
+	@Override
+	public List<$!{bean.upperName}Bean> get$!{bean.upperName}ListBy($!{bean.upperName}Bean bean) throws Exception{
+		List<$!{bean.upperName}Bean> list = new ArrayList<$!{bean.upperName}Bean>();
+		List<String> condition = new ArrayList<String>();
+		#foreach($key in $!{bean.columnMap.keySet()})
+        if (!StringUtil.isBlank(bean.get${bean.columnMap.get($key)}())) {
+    		getSQL.append(" and t.$key = ? ");
+    		condition.add(StringUtil.deNull(bean.get${bean.columnMap.get($key)}()));
+    	}		
+		#end		
+		
+		/********** your code beg **********/
+		
+		/********** your code end **********/
+		return list;
+	}
+	
+	@Override
+	public $!{bean.upperName}Bean get$!{bean.upperName}ById(String id) throws Exception{
+		$!{bean.upperName}Bean bean = new $!{bean.upperName}Bean();
+		bean.set$!{bean.pkName}(id);
+		List<$!{bean.upperName}Bean> list = get$!{bean.upperName}ListBy(bean);
+		if (list.size()>0) {
+			bean = list.get(0);
+		}
+		return bean;
+	}
+  
+	@Override
+	public $!{bean.upperName}Bean save$!{bean.upperName}($!{bean.upperName}Bean bean) throws Exception {
+		/********** your code beg **********/
+		
+		/********** your code end **********/
+		return bean;
+	}
+  
+    @Override
+    public void update$!{bean.upperName}($!{bean.upperName}Bean bean) throws Exception {
+		
+    }
+    
+    @Override
+    public void delete$!{bean.upperName}(String id) throws Exception {
+		
+    }
+    
+    public static void main(String[] args) {
+        $!{bean.upperName}DaoImpl dao = new $!{bean.upperName}DaoImpl();
+        System.out.println(dao.getSQL.toString());
+        System.out.println(dao.saveSQL.toString());
+        System.out.println(dao.updateSQL.toString());
+        System.out.println(dao.deleteSQL.toString());
+    }
+
+}

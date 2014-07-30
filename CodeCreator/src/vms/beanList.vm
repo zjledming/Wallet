@@ -1,0 +1,22 @@
+package $!{bean.packageUrl};
+
+import $!{bean.beanUrl};
+import $!{bean.beanDaoUrl};
+import $!{bean.beanDaoImplUrl};
+import $!{bean.beanServiceUrl};
+
+/**
+ * $!{bean.beanRemark}List列表
+ * @author $!{annotation.authorName}
+ * @date $!{annotation.date}
+ *
+ * @version $!{annotation.version}
+ */
+public class $!{bean.upperName}ServiceImpl implements $!{bean.upperName}Service{
+
+	/**
+	 * $!{bean.upperName} Dao
+	 */
+	private $!{bean.upperName}Dao $!{bean.upperName}Dao = new $!{bean.upperName}DaoImpl();
+	
+}

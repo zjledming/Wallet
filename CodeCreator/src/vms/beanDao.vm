@@ -1,0 +1,50 @@
+package $!{bean.packageUrl};
+
+import $!{bean.beanUrl};
+import java.util.List;
+
+/**
+ * $!{bean.beanRemark}Dao接口
+ * @author $!{annotation.authorName}
+ * @date $!{annotation.date}
+ *
+ * @version $!{annotation.version}
+ */
+public interface $!{bean.upperName}Dao {
+  
+    /**
+    * 查询$!{bean.beanRemark}列表
+    * @param bean 
+    * @throws Exception
+    */
+    public List<$!{bean.upperName}Bean> get$!{bean.upperName}ListBy($!{bean.upperName}Bean bean) throws Exception ;
+	
+	/**
+     * 根据主键查询$!{bean.beanRemark}
+     * @param id 主键 
+     * @throws Exception
+     */
+	public $!{bean.upperName}Bean get$!{bean.upperName}ById(String id) throws Exception;
+  
+    /**
+    * 保存$!{bean.beanRemark}
+    * @param bean 
+    * @throws Exception
+    */
+    public $!{bean.upperName}Bean save$!{bean.upperName}($!{bean.upperName}Bean bean) throws Exception ;
+  
+    /**
+    * 修改$!{bean.beanRemark}
+    * @param bean
+    * @throws Exception
+    */
+    public void update$!{bean.upperName}($!{bean.upperName}Bean bean) throws Exception ;
+  
+    /**
+    * 删除$!{bean.beanRemark}
+    * @param id 主键
+    * @throws Exception
+    */
+    public void delete$!{bean.upperName}(String id) throws Exception ;
+  
+}

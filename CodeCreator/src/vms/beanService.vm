@@ -1,0 +1,40 @@
+package $!{bean.packageUrl};
+
+import $!{bean.beanUrl};
+import $!{bean.beanDaoUrl};
+import $!{bean.beanDaoImplUrl};
+import java.util.List;
+import java.util.ArrayList;
+
+/**
+ * $!{bean.beanRemark}业务接口
+ * @author $!{annotation.authorName}
+ * @date $!{annotation.date}
+ *
+ * @version $!{annotation.version}
+ */
+public interface $!{bean.upperName}Service {
+  /**
+  * 查询$!{bean.beanRemark}列表
+  * @param bean 
+  */
+  public List<$!{bean.upperName}Bean> get$!{bean.upperName}ListBy($!{bean.upperName}Bean bean);
+  
+  /**
+  * 保存$!{bean.beanRemark}
+  * @param bean 
+  */
+  public void save$!{bean.upperName}($!{bean.upperName}Bean bean);
+  
+  /**
+  * 修改$!{bean.beanRemark}
+  * @param bean
+  */
+  public void update$!{bean.upperName}($!{bean.upperName}Bean bean);
+  
+  /**
+  * 删除$!{bean.beanRemark}
+  * @param id 主键
+  */
+  public void delete$!{bean.upperName}(String id);
+}
