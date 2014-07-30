@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    linkmendproof-server   缮证中间数据库相关配置
+	url                    服务端数据库IP或地址
+	port      			        服务端数据库端口
+	username  			        用户名
+	password               密码
+	driverClass            服务端数据库驱动类型
+
+charge-sql    地税sql
+updatecharge-sql 修改地税状态sql
+  prototype
+    filedname 和dao层里面map的key值对应
+linkmendproof-sql    查看缮证状态sql
+page-config 地税个性化页面
+  ecid 事项
+    page对应的个性化配置页面地址
+ -->
+<linkmendproof-config>
+	<linkmendproof-server>
+		<url>jdbc:oracle:thin:@//172.16.17.66:1521/orcl</url>
+		<username>app_xzsp</username>
+		<password>123456</password>
+		<port>1521</port>
+		<driverClass>oracle.jdbc.driver.OracleDriver</driverClass>
+	</linkmendproof-server>
+	<charge-sql value="update ta_sp_test t set t.status='缮证' where t.instance_code = ?" >
+		<prototype type="java.lang.String.class" method="setXX" filedname="code"></prototype>
+	</charge-sql>
+	<updatecharge-sql value="update ta_sp_test t set t.is_finish=? where t.instance_code = ?" >
+		<prototype type="java.lang.String.class" method="setXX1" filedname = "is_finsined"></prototype>
+		<prototype type="java.lang.String.class" method="setXX" filedname="serial_number"></prototype>
+	</updatecharge-sql>
+	<linkmendproof-sql value="select t.is_finish from ta_sp_test t where t.instance_code=?">
+		<prototype type="java.lang.String.class" method="setXX" filedname="code"></prototype>
+	</linkmendproof-sql>
+	<page-config >
+		<ecid page="/kcapp/xzsp/jsp/instance/taxcertificate.jsp">63892</ecid>
+		<ecid page="/kcapp/xzsp/jsp/instance/taxcertificate.jsp">2402</ecid>
+	</page-config>
+</linkmendproof-config>

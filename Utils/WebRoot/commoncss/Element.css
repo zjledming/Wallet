@@ -1,0 +1,184 @@
+.cButton {/*按钮（可单击状态）*/
+	padding-left: 6px;
+	height: 25px;
+	width: 88px;
+	border: none;
+	font-family: "宋体";
+	font-size: 13px;
+	color: #ffffff;
+	text-decoration: none;
+	line-height: 25px;
+	margin-bottom: 6px;
+	margin-top: 6px;
+	background-image: url(images/botton_064.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-right: 3px;
+}
+
+/*划过效果*/
+.cButton:hover{ background-image:url(images/botton_0641.gif)}
+
+/*按钮（灰色状态）*/
+.cButtonDisable {padding-left: 6px;
+	height: 25px;
+	width: 88px;
+	border: none;
+	font-family: "宋体";
+	font-size: 13px;
+	color: #CCCCCC;
+	text-decoration: none;
+	line-height: 25px;
+	margin-bottom: 6px;
+	margin-top: 6px;
+	margin-right: 3px;
+	background-image: url(images/botton_a.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+
+}
+
+.cButton_long {/*4字以上的按钮（可单击状态）*/
+	padding-left: 6px;
+	height: 25px;
+	width: 124px;
+	border: none;
+	font-family: "宋体";
+	font-size: 13px;
+	color: #ffffff;
+	text-decoration: none;
+	line-height: 25px;
+	margin-bottom: 6px;
+	margin-top: 6px;
+	background-image: url(images/cdbotton_064.gif);
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-right: 3px;
+}
+
+
+/*4字以上的按钮（灰色状态）*/
+.cButtonDisable_long {padding-left: 6px;
+	height: 25px;
+	width: 124px;
+	border: none;
+	font-family: "宋体";
+	font-size: 13px;
+	color: #CCCCCC;
+	text-decoration: none;
+	line-height: 25px;
+	margin-bottom: 6px;
+	margin-top: 6px;
+	margin-right: 3px;
+	background-image: url(images/sdbotton_a.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+
+}
+
+
+/*单行文本输入框（可编辑状态）*/
+
+.cText_on{
+padding:2px 8px 0pt 3px;
+height:18px;
+border:1px solid #999;
+background-color:#FFFFCC;
+}
+.cText_off{
+padding:2px 8px 0pt 3px;
+height:18px;
+border:1px solid #CCC;
+background-color:#FFF;
+}
+.cText_move{
+padding:2px 8px 0pt 3px;
+height:18px;
+border:1px solid #999;
+background-color:#FFFFCC;
+}
+.cText_out{
+/*height:16px;默认高度*/
+padding:2px 8px 0pt 3px;
+height:18px;
+border:1px solid #CCC;
+/*background-color:#dbf0dc;*/
+}
+.cTextout{
+	/*height:16px;默认高度*/
+	padding:2px 8px 0pt 3px;
+	height:22px;
+	border:1px solid #CCC;
+	color:#000;
+	background-color:#FFF;
+	/*cursor: default;*/
+}
+/*单行文本输入框（只读状态）*/
+.cTextReadOnly {
+	height:20px;
+	color: black;
+	padding-top: 1px;
+	padding-right: 8px;
+	padding-bottom: 0pt;
+	padding-left: 3px;
+	border: 0px solid #c6c6c6;
+}
+
+
+/*多行文本输入框（可编辑状态）*/
+.cTextarea {
+   text-align: left;
+}
+/*多行文本输入框（只读状态）*/
+.cTextareaReadOnly {
+
+}
+/*单选框（可选状态）*/
+.cRadio {
+
+}
+/*单选框（只读状态）*/
+.cRadioDisable {
+
+}
+/*复选框（可选状态）*/
+.cCheckbox {
+
+}
+/*复选框（只读状态）*/
+.cCheckboxDisable {
+
+}
+/*下拉列表（可选状态）*/
+cCombobox {
+
+}
+/*下拉列表（只读状态）*/
+cComboboxDisable {
+
+}
+
+/*日期*/
+.input_date {
+	font-size:12px;
+	border:0px solid #bcbcbc;
+	background-repeat: no-repeat;
+	background-position: right;
+	background-image: url(images/calendar.gif);
+	height: 22px;
+}
+
+/*带图标的输入框*/
+.input_ico{
+	background-image:url(images/zoom_in.gif);
+	background-repeat:no-repeat;
+	background-position:100%;
+	background-color: #FFFFFF;
+	border: 0px solid #BCBCBC;
+	height:22px;
+	line-height:22px;
+	text-align:left;
+	margin:0px;
+	padding:0;
+	padding-left:4px;
+}

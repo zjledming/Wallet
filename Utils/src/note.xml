@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="GBK"?>
+<reflect>
+	<!-- 服务器短信是否使用的开关 -->
+	<note-used>false</note-used>
+	<!-- 短信失败重发重发的次数, 默认为1次 .最大重发次数不超过5次 -->
+	<attempt-times>1</attempt-times>
+
+	<!-- 机构或者区域短信配置信息 -->
+	<orgs>
+		<!-- param_class 参数实体bean reflect_class 短信发送实现类-->
+		<org param_class="com.chinacreator.v2.xzsp.note.support.paramentity.SuperMessengerBean" org_code="11"
+			reflect_class="com.chinacreator.v2.xzsp.note.send.impl.SuperMessengerNoteSend" >
+			<url>http://www.haokan123.com/</url>
+			<user_name>ww</user_name>
+			<password>123456</password>
+		</org>
+		
+		<org param_class="com.chinacreator.v2.xzsp.note.support.paramentity.SuperMessengerBean" org_code="4399"
+			reflect_class="com.chinacreator.v2.xzsp.note.send.impl.SuperMessengerNoteSend" >
+			<url>http://www.haokan123.com/</url>
+			<user_name>ww</user_name>
+			<password>123456</password>
+		</org>
+
+	</orgs>
+</reflect>

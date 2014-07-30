@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+		<META NAME="Author" CONTENT="goaler" />
+		<META NAME="Keywords" CONTENT="JS、HTML代码运行工具" />
+		<META NAME="Description" CONTENT="JS、HTML代码运行工具" />
+		<title>JS、HTML代码运行工具</title>
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		<SCRIPT LANGUAGE="JavaScript">
+	function copyCode(obj) {
+		if (obj.value == "") {
+			alert("请输入要复制的代码内容");
+			return false;
+		}
+		var rng = document.body.createTextRange();
+		rng.moveToElementText(obj);
+		rng.scrollIntoView();
+		rng.select();
+		rng.execCommand("Copy");
+		rng.collapse(false);
+	}
+	function runCode(obj) {
+		if (obj.value == "") {
+			alert("请输入要运行的代码内容");
+			return false;
+		}
+		var winname = window.open('', "_blank", '');
+		winname.document.open('text/html', 'replace');
+		winname.document.writeln(obj.value);
+		winname.document.close();
+	}
+	function saveCode(obj) {
+		if (obj.value == "") {
+			alert("请输入要保存的代码内容");
+			return false;
+		}
+		var winname = window.open('', '_blank', '');
+		winname.document.open('text/html', 'replace');
+		winname.document.writeln(obj.value);
+		winname.document.close();
+		winname.document.execCommand('saveas', '', 'savecode.htm');
+		winname.close();
+	}
+</SCRIPT>
+	</head>
+	</P>
+	<P>
+		<body>
+			<div class="menu_head">
+				JS、HTML脚本运行工具
+			</div>
+			<div class="content" align="center">
+				<textarea name="textarea" style="width: 99%" rows="30" id="testcode"></textarea>
+				<div>
+					<input name="button" type="button" onclick="runCode(testcode)"
+						value="运行代码">
+						<input name="button" type="button" onclick="copyCode(testcode)"
+							value="复制代码">
+							<input name="button" type="button" onclick="saveCode(testcode)"
+								value="保存代码">
+								<input name="button" type="button"
+									onclick="document.getElementById('testcode').value='';"
+									value="清空代码">
+				</div>
+			</div>
+	</P>
+	<P>
+		</body>
+</html>

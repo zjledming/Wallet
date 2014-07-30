@@ -1,0 +1,110 @@
+
+a.cls {
+	height: 18px;
+	width: 18px;
+	display: block;
+	overflow: hidden;
+	line-height: 200px;
+}
+
+.nr {
+	padding: 10px;
+	text-align: left;
+}
+
+.box {
+	border: 1px #999999 solid;
+	background: #FFF;
+}
+
+.lt,.rt,.lb,.rb {
+	height: 6px;
+	width: 6px;
+}
+
+.t,.b,.l,.r {
+	background: #000000;
+	filter: alpha(opacity =       10);
+	-moz-opacity: .1;
+	opacity: .1;
+	line-height: 0;
+}
+
+.l,.r {
+	width: 6px;
+}
+
+.t,.b {
+	height: 6px;
+}
+
+.lt {
+	background-position: 0 0;
+}
+
+.rt {
+	background-position: right 0;
+}
+
+.lb {
+	background-position: 0 bottom;
+}
+
+.rb {
+	background-position: right bottom;
+}
+
+/*Ð¡Èý½Ç*/
+s {
+	position: absolute;
+	top: -19px;
+	*top: -13px;
+	left: 556px;
+	display: block;
+	height: 0;
+	width: 0;
+	font-size: 0;
+	line-height: 0;
+	border-color: transparent transparent #666 transparent;
+	border-style: dashed dashed solid dashed;
+	border-width: 10px;
+}
+
+i {
+	position: absolute;
+	top: -9px;
+	*top: -9px;
+	left: -10px;
+	display: block;
+	height: 0;
+	width: 0;
+	font-size: 0;
+	border-width: 10px;
+	line-height: 0;
+	border-color: transparent transparent #FFF transparent;
+	border-style: dashed dashed solid dashed;
+}
+
+.open {
+	position: relative;
+	width: 150px;
+	height: 25px;
+	line-height: 180%;
+	border: 1px solid #FF9900;
+	background: #FFCC00;
+	margin: 12% auto 0 400px;
+	text-align: center;
+}
+
+.open span {
+	cursor: pointer;
+	display: block;
+	width: 100%;
+}
+
+.odiv {
+	position: absolute;
+	top: 29px;
+	left: -1px;
+	width: 300px;
+}

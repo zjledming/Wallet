@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GBK"?>
+<root>
+	<roles>
+		<name>省本级管理员#4</name>
+		<name>市本级管理员#6</name>  
+		<name>区县本级管理员#9#000</name>
+		<name>街道办事处管理员#12</name>
+	</roles>
+	<viewrolename>
+		<name>超级管理员#本级管理员</name>
+	</viewrolename>
+	
+	<column>
+		<name>01#PROVINCE_CODE</name>
+		<name>02#CITY_CODE</name>
+		<name>01#County_CODE</name>
+		<name>01#STREET_CODE</name>
+	</column>    
+</root>

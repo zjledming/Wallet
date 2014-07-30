@@ -1,0 +1,288 @@
+http://www.blogjava.net/stone2083/archive/2008/03/16/186615.html
+CGlib简单介绍
+
+CGlib概述：
+cglib（Code Generation Library）是一个强大的,高性能,高质量的Code生成类库。它可以在运行期扩展Java类与实现Java接口。
+cglib封装了asm，可以在运行期动态生成新的class。
+cglib用于AOP，jdk中的proxy必须基于接口，cglib却没有这个限制。
+
+CGlib应用：
+以一个实例在简单介绍下cglib的应用。
+我们模拟一个虚拟的场景，关于信息的管理。
+
+1）原始需求是任何人可以操作信息的create，update，delete，query操作。
+InfoManager.java－－封装对信息的操作
+public class InfoManager {
+    // 模拟查询操作
+    public void query() {
+        System.out.println("query");
+    }
+    // 模拟创建操作
+    public void create() {
+        System.out.println("create");
+    }
+    // 模拟更新操作
+    public void update() {
+        System.out.println("update");
+    }
+    // 模拟删除操作
+    public void delete() {
+        System.out.println("delete");
+    }
+}
+InfoManagerFactory.java－－工厂类
+public class InfoManagerFactory {
+    private static InfoManager manger = new InfoManager();
+    /**
+     * 创建原始的InfoManager
+     * 
+     * @return
+     */
+    public static InfoManager getInstance() {
+        return manger;
+    }
+}
+client.java－－供客户端调用
+public class Client {
+
+    public static void main(String[] args) {
+        Client c = new Client();
+        c.anyonecanManager();
+    }
+
+    /**
+     * 模拟：没有任何权限要求，任何人都可以操作
+     */
+    public void anyonecanManager() {
+        System.out.println("any one can do manager");
+        InfoManager manager = InfoManagerFactory.getInstance();
+        doCRUD(manager);
+        separatorLine();
+    }
+
+    /**
+     * 对Info做增加／更新／删除／查询操作
+     * 
+     * @param manager
+     */
+    private void doCRUD(InfoManager manager) {
+        manager.create();
+        manager.update();
+        manager.delete();
+        manager.query();
+    }
+
+    /**
+     * 加一个分隔行，用于区分
+     */
+    private void separatorLine() {
+        System.out.println("################################");
+    }
+
+}
+至此，没有涉及到cglib的内容，因为需求太简单了，但是接下来，需求发生了改变，要求：
+
+2）只有一个叫“maurice”的用户登录，才允许对信息进行create，update，delete，query的操作。
+怎么办？难道在每个方法前，都加上一个权限判断吗？这样重复逻辑太多了，于是乎想到了Proxy（代理模式），但是原先的InfoManager也没有实现接口，不能采用jdk的proxy。那么cglib在这边就要隆重登场。
+一旦使用cgblig，只需要添加一个MethodInterceptor的类以及修改factory代码就可以实现这个需求。
+AuthProxy.java－－权限校验代理类
+public class AuthProxy implements MethodInterceptor {
+
+    private String name; // 会员登录名
+
+    public AuthProxy(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 权限校验，如果会员名为:maurice，则有权限做操作，否则提示没有权限
+     */
+    @Override
+    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+        if (!"maurice".equals(this.name)) {
+            System.out.println("AuthProxy:you have no permits to do manager!");
+            return null;
+        }
+        return proxy.invokeSuper(obj, args);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+}
+InfoManagerFactory.java－－代码变动如下：
+public class InfoManagerFactory {
+
+    /**
+     * 创建带有权限检验的InfoManager
+     * 
+     * @param auth
+     * @return
+     */
+    public static InfoManager getAuthInstance(AuthProxy auth) {
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(InfoManager.class);
+        enhancer.setCallback(auth);
+        return (InfoManager) enhancer.create();
+    }
+
+    
+}
+client.java－－代码修改如下
+public class Client {
+
+    public static void main(String[] args) {
+        Client c = new Client();
+        c.haveNoAuthManager();
+        c.haveAuthManager();
+    }
+
+    /**
+     * 模拟：登录会员没有权限
+     */
+    public void haveNoAuthManager() {
+        System.out.println("the loginer's name is not maurice,so have no permits do manager");
+        InfoManager noAuthManager = InfoManagerFactory.getAuthInstance(new AuthProxy("maurice1"));
+        doCRUD(noAuthManager);
+        separatorLine();
+    }
+
+    /**
+     * 模拟：登录会员有权限
+     */
+    public void haveAuthManager() {
+        System.out.println("the loginer's name is maurice,so have permits do manager");
+        InfoManager authManager = InfoManagerFactory.getAuthInstance(new AuthProxy("maurice"));
+        doCRUD(authManager);
+        separatorLine();
+    }
+
+    /**
+     * 对Info做增加／更新／删除／查询操作
+     * 
+     * @param manager
+     */
+    private void doCRUD(InfoManager manager) {
+        manager.create();
+        manager.update();
+        manager.delete();
+        manager.query();
+    }
+
+    /**
+     * 加一个分隔行，用于区分
+     */
+    private void separatorLine() {
+        System.out.println("################################");
+    }
+
+}
+执行下代码,发现这时client端中已经加上了权限校验。
+同样是InfoManager，为什么这时能多了权限的判断呢？Factory中enhancer.create()返回的到底是什么对象呢？这个疑问将在第三部分CGlib中解释。
+这边的代码,其实是介绍了cglib中的enhancer功能.
+
+到这里，参照上面的代码，就可以使用cglib带来的aop功能了。但是为了更多介绍下cglib的功能，模拟需求再次发生变化：
+
+3）由于query功能用户maurice才能使用，招来其他用户的强烈的抱怨，所以权限再次变更，只有create，update，delete，才需要权限保护,query任何人都可以使用。
+怎么办？采用AuthProxy，使得InfoManager中的所有方法都被代理，加上了权限的判断。当然，最容易想到的办法，就是在AuthProxy的intercept的方法中再做下判断，如果代理的method是query，不需要权限验证。这么做，可以，但是一旦逻辑比较复杂的时候，intercept这个方法要做的事情会很多，逻辑会异常的复杂。
+幸好，cglib还提供了CallbackFilter。使用CallbackFilter，可以明确表明，被代理的类（InfoManager）中不同的方法，被哪个拦截器（interceptor)拦截。
+AuthProxyFilter.java
+public class AuthProxyFilter implements CallbackFilter {
+
+    private static final int AUTH_NEED     = 0;
+    private static final int AUTH_NOT_NEED = 1;
+
+    /**
+     * <pre>
+     * 选择使用的proxy
+     * 如果调用query函数，则使用第二个proxy
+     * 否则，使用第一个proxy
+     * </pre>
+     */
+    @Override
+    public int accept(Method method) {
+        if ("query".equals(method.getName())) {
+            return AUTH_NOT_NEED;
+        }
+        return AUTH_NEED;
+    }
+
+}
+这段代码什么意思？其中的accept方法的意思是说，如果代理的方法是query()，那么使用第二个拦截器去拦截，如果代理的方法不是query(),那么使用第一个拦截器去拦截。所以我们只要再写一个拦截器，不做权限校验就行了。（其实，cglib中的NoOp.INSTANCE就是一个空的拦截器，只要配置上这个就可以了。）
+InfoManagerFactory.java－－代码修改如下：（配置不同的拦截器和filter）
+public class InfoManagerFactory {
+
+    /**
+     * 创建不同权限要求的InfoManager
+     * 
+     * @param auth
+     * @return
+     */
+    public static InfoManager getSelectivityAuthInstance(AuthProxy auth) {
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(InfoManager.class);
+        enhancer.setCallbacks(new Callback[] { auth, NoOp.INSTANCE });
+        enhancer.setCallbackFilter(new AuthProxyFilter());
+        return (InfoManager) enhancer.create();
+    }
+
+}
+记住：setCallbacks中的拦截器(interceptor)的顺序，一定要和CallbackFilter里面指定的顺序一致！！切忌。
+
+Client.java
+public class Client {
+
+    public static void main(String[] args) {
+        Client c = new Client();
+        c.selectivityAuthManager();
+    }
+    
+    /**
+     * 模拟：没有权限的会员，可以作查询操作
+     */
+    public void selectivityAuthManager() {
+        System.out.println("the loginer's name is not maurice,so have no permits do manager except do query operator");
+        InfoManager authManager = InfoManagerFactory.getSelectivityAuthInstance(new AuthProxy("maurice1"));
+        doCRUD(authManager);
+        separatorLine();
+    }
+
+    /**
+     * 对Info做增加／更新／删除／查询操作
+     * 
+     * @param manager
+     */
+    private void doCRUD(InfoManager manager) {
+        manager.create();
+        manager.update();
+        manager.delete();
+        manager.query();
+    }
+
+    /**
+     * 加一个分隔行，用于区分
+     */
+    private void separatorLine() {
+        System.out.println("################################");
+    }
+
+}
+此时，对于query的权限校验已经被去掉了。
+
+
+通过一个模拟需求，简单介绍了cglib aop功能的使用。
+CGlib应用非常广，在spring，hibernate等框架中，被大量的使用。
+
+
+CGlib原理：
+cglib神奇吗？其实一旦了解cglib enhancer的原理，一切就真相大白了。
+刚才在第二部分中，有个疑问：enhancer.create()到底返回了什么对象？
+
+其实在刚才的例子中，cglib在代码运行期，动态生成了InfoManager的子类，并且根据CallbackFilter的accept方法，覆写了InfoManager中的所有方法－－去执行相应的MethodInterceptor的intercept方法。
+
+有兴趣的朋友可以看看我反编译的InfoManager的子类，就可以很明白知道具体的实现了。（需要有耐心才可以）
