@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="gbk"?>
+<Context crossContext="true"
+    path="/creatorepp"
+    docBase="PROPATH"
+    reloadable="false">
+    <ResourceLink name="reportsource" global="reportsource" type="javax.sql.DataSource"/>
+</Context>
