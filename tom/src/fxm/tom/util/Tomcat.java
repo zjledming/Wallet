@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 
@@ -214,27 +216,61 @@ public class Tomcat {
 		return sb.toString();
 	}
 
-	public static void main(String[] args) {
-		Tomcat t = new Tomcat();
-		try {
-			System.out.println(t.getCurrentClassPath());
-			String re = t.getCurrentClassPath().substring(0,
-					t.getCurrentClassPath().lastIndexOf("\\"));
-			System.out.println(re);
-			File file = new File("/creatorepp.xml");
-			System.out.println(file.getAbsolutePath());
-			// t.delFile(new File(tomcatPath + File.separator + "work"));
-			// t.delFolder(new File(tomcatPath + File.separator + "work"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public void start(String tomcatPath) throws Exception {
 		File startUpFile = new File(tomcatPath, "bin\\startup.bat");
 		String path = startUpFile.getPath().replace("\\", "\\\\");
 		Runtime.getRuntime().exec("cmd.exe /k start " + path);
-		;
 	}
+	
+	
+	public String getLocalCofingProject(String tomcatPath) throws Exception{
+		String re = "";
+		File configXML = new File(tomcatPath, "conf\\Catalina\\localhost\\creatorepp.xml");
+		if (configXML.exists()) {
+			String content = FileUtils.readFileToString(configXML);
+			System.out.println(content);
+			re = getByReg(content);
+			re = re.replace("docBase=", "").replace("\"", "");
+		}else{
+			re = "配置文件不存在："+configXML.getAbsolutePath();
+		}
+		System.out.println(re);
+		return re;
+	}
+	
+	public String getByReg(String content) throws Exception{
+		StringBuffer sb = new StringBuffer();
+		String reg = "docBase=\".*creatorepp\"";
+		Pattern pattern = Pattern.compile(reg);
+		Matcher matcher = pattern.matcher(content);
+		while (matcher.find()) {
+			sb.append(matcher.group(0));
+		}
+		return sb.toString();
+	}
+	
+	
+	public static void main(String[] args) {
+		Tomcat t = new Tomcat();
+		try {
+//			System.out.println(t.getCurrentClassPath());
+//			String re = t.getCurrentClassPath().substring(0,
+//					t.getCurrentClassPath().lastIndexOf("\\"));
+//			System.out.println(re);
+//			File file = new File("/creatorepp.xml");
+//			System.out.println(file.getAbsolutePath());
+			// t.delFile(new File(tomcatPath + File.separator + "work"));
+			// t.delFolder(new File(tomcatPath + File.separator + "work"));
+			
+			t.getLocalCofingProject(tomcatPath);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 }

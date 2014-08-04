@@ -1,4 +1,5 @@
 package fxm.tom.main;
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -116,21 +117,22 @@ public class MainDialog extends JFrame {
 						&& (MainDialog.this.tomcatPath.getText().length() > 0)) {
 					new Tomcat().config(MainDialog.this.tomcatPath.getText(),
 							MainDialog.this.projectPath.getText());
-					JOptionPane.showMessageDialog(MainDialog.this,"部署成功！");
+					JOptionPane.showMessageDialog(MainDialog.this, "部署成功！");
 					invoke(10001);
 				} else {
 					// 提示框
 					JOptionPane.showMessageDialog(MainDialog.this,
 							"请选择tomcat路径和项目路径！");
 				}
-			}else if (index == 10001) {
+			} else if (index == 10001) {
 				// 清理缓存
 				if ((MainDialog.this.projectPath.getText().length() > 0)
 						&& (MainDialog.this.tomcatPath.getText().length() > 0)) {
 					try {
-						new Tomcat().clear(MainDialog.this.tomcatPath.getText());
+						new Tomcat()
+								.clear(MainDialog.this.tomcatPath.getText());
 						JOptionPane.showMessageDialog(MainDialog.this,
-								"清理缓存成功！" );
+								"清理缓存成功！");
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(MainDialog.this,
 								"清理缓存失败，程序发生异常：" + e.getMessage());
@@ -166,6 +168,13 @@ public class MainDialog extends JFrame {
 					File selectfile = chooser.getSelectedFile();
 					// 给tomcat路径赋值
 					jField.setText(selectfile.getAbsolutePath());
+
+					// 每次选择tomcat路径之后，更新项目路径
+					if (index == 1) {
+						MainDialog.this.projectPath.setText(new Tomcat()
+								.getLocalCofingProject(selectfile
+										.getAbsolutePath()));
+					}
 				} else {
 					System.out.println("No Selection ");
 				}
@@ -207,11 +216,13 @@ public class MainDialog extends JFrame {
 				* theight, bwidth, theight);
 		this.contentPane.add(button);
 	}
-	
+
 	int butWidth = 90;
+
 	/**
 	 * 多个按钮<br>
 	 * 设置按钮，倒数第二行，居中对齐
+	 * 
 	 * @param butText
 	 */
 	public void setButton(String[] butText) {
@@ -227,7 +238,7 @@ public class MainDialog extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (e.getActionCommand().equals("部	  署")) {
 						invoke(10000);
-					}else if (e.getActionCommand().equals("清理缓存")) {
+					} else if (e.getActionCommand().equals("清理缓存")) {
 						invoke(10001);
 					}
 				}
@@ -315,10 +326,22 @@ public class MainDialog extends JFrame {
 		setSelect("选择", 2);
 
 		// 设置按钮
-		//setButton();
-		setButton(new String[] {"部	  署", "清理缓存" });
+		// setButton();
+		setButton(new String[] { "部	  署", "清理缓存" });
 
 		// made by
 		setMadeBy();
+
+		// 初始化
+		try {
+			MainDialog.this.projectPath
+					.setText(new Tomcat()
+							.getLocalCofingProject(MainDialog.this.tomcatPath
+									.getText()));
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(MainDialog.this,
+					"【项目路径】初始化异常：" + e.getMessage());
+		}
 	}
 }

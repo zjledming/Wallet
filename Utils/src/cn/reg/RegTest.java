@@ -266,4 +266,27 @@ public class RegTest {
 		}
 
 	}
+	
+	/**
+	 * 从
+	 * <?xml version="1.0" encoding="gbk"?>
+<Context crossContext="true" path="/creatorepp" docBase="E:\workspace\hyxfs\creatorepp" reloadable="false">
+	<ResourceLink name="reportsource" global="reportsource" type="javax.sql.DataSource" />
+</Context>
+	 * 中取"E:\workspace\hyxfs\creatorepp"
+	 * @param content
+	 * @return
+	 * @throws Exception
+	 */
+	public String getByReg(String content) throws Exception{
+		StringBuffer sb = new StringBuffer();
+		String reg = "docBase=\".*creatorepp\"";
+		Pattern pattern = Pattern.compile(reg);
+		Matcher matcher = pattern.matcher(content);
+		while (matcher.find()) {
+			sb.append(matcher.group(0));
+		}
+		return sb.toString();
+	}
+	
 }

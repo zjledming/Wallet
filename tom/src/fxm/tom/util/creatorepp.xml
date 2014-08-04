@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="gbk"?>
-<Context crossContext="true" path="/creatorepp" docBase="E:\workspace\zzrz\creatorepp" reloadable="false">
+<Context crossContext="true" path="/creatorepp" docBase="E:\workspace\hyxfs\creatorepp" reloadable="false">
 	<ResourceLink name="reportsource" global="reportsource" type="javax.sql.DataSource" />
 </Context>

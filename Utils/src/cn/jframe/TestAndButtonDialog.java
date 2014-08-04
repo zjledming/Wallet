@@ -1,9 +1,9 @@
 package cn.jframe;
 
-import com.chinacreator.util.CryptUtil;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -115,9 +115,9 @@ public class TestAndButtonDialog extends JFrame {
 						&& (TestAndButtonDialog.this.userName.getText()
 								.length() > 0)) {
 					// 赋值
-					TestAndButtonDialog.this.pwd1.setText(CryptUtil
+					TestAndButtonDialog.this.pwd1.setText(cn.md5.util.CryptUtil
 							.encrypt(TestAndButtonDialog.this.pwd.getText()));
-					TestAndButtonDialog.this.userName1.setText(CryptUtil
+					TestAndButtonDialog.this.userName1.setText(cn.md5.util.CryptUtil
 							.encrypt(TestAndButtonDialog.this.userName
 									.getText()));
 				} else {
@@ -136,9 +136,9 @@ public class TestAndButtonDialog extends JFrame {
 				if ((TestAndButtonDialog.this.pwd.getText().length() > 0)
 						&& (TestAndButtonDialog.this.userName.getText()
 								.length() > 0)) {
-					TestAndButtonDialog.this.pwd1.setText(CryptUtil
+					TestAndButtonDialog.this.pwd1.setText(cn.md5.util.CryptUtil
 							.decrypt(TestAndButtonDialog.this.pwd.getText()));
-					TestAndButtonDialog.this.userName1.setText(CryptUtil
+					TestAndButtonDialog.this.userName1.setText(cn.md5.util.CryptUtil
 							.decrypt(TestAndButtonDialog.this.userName
 									.getText()));
 				} else {
