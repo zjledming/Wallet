@@ -1,7 +1,5 @@
 import org.junit.Test;
 
-import com.sun.mail.handlers.text_html;
-
 
 public class EscapeUtil {
 

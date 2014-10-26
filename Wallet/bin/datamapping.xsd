@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--W3C Schema 由 XMLSpy v2005 发行版 3 U 创建 (http://www.altova.com)-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="DataMapping">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="SourceTable" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DestField">
+		<xs:complexType>
+			<xs:attribute name="name" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="field1"/>
+						<xs:enumeration value="field2"/>
+						<xs:enumeration value="field3"/>
+						<xs:enumeration value="field4"/>
+						<xs:enumeration value="field5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="SrcField" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="field1"/>
+						<xs:enumeration value="field2"/>
+						<xs:enumeration value="srcfield1"/>
+						<xs:enumeration value="srcfield2"/>
+						<xs:enumeration value="srcfield3"/>
+						<xs:enumeration value="srcfield4"/>
+						<xs:enumeration value="srcfield5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="isprimarykey">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="idtype">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="seqname" type="xs:string"/>
+			<xs:attribute name="nullable" type="xs:string"/>
+			<xs:attribute name="defval" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DestTables">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="table"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SourceTable">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DestTables" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="src_tbl1"/>
+						<xs:enumeration value="src_tbl2"/>
+						<xs:enumeration value="src_tbl3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="table">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="DestField" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="dest1"/>
+						<xs:enumeration value="dest3"/>
+						<xs:enumeration value="dest4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="db2"/>
+						<xs:enumeration value="oracle"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

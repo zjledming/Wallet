@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    linkmendproof-server   ÉÉÖ¤ÖÐ¼äÊý¾Ý¿âÏà¹ØÅäÖÃ
-	url                    ·þÎñ¶ËÊý¾Ý¿âIP»òµØÖ·
-	port      			        ·þÎñ¶ËÊý¾Ý¿â¶Ë¿Ú
-	username  			        ÓÃ»§Ãû
-	password               ÃÜÂë
-	driverClass            ·þÎñ¶ËÊý¾Ý¿âÇý¶¯ÀàÐÍ
+    linkmendproof-server   ç¼®è¯ä¸­é—´æ•°æ®åº“ç›¸å…³é…ç½®
+	url                    æœåŠ¡ç«¯æ•°æ®åº“IPæˆ–åœ°å€
+	port      			        æœåŠ¡ç«¯æ•°æ®åº“ç«¯å£
+	username  			        ç”¨æˆ·å
+	password               å¯†ç 
+	driverClass            æœåŠ¡ç«¯æ•°æ®åº“é©±åŠ¨ç±»åž‹
 
-charge-sql    µØË°sql
-updatecharge-sql ÐÞ¸ÄµØË°×´Ì¬sql
+charge-sql    åœ°ç¨Žsql
+updatecharge-sql ä¿®æ”¹åœ°ç¨ŽçŠ¶æ€sql
   prototype
-    filedname ºÍdao²ãÀïÃæmapµÄkeyÖµ¶ÔÓ¦
-linkmendproof-sql    ²é¿´ÉÉÖ¤×´Ì¬sql
-page-config µØË°¸öÐÔ»¯Ò³Ãæ
-  ecid ÊÂÏî
-    page¶ÔÓ¦µÄ¸öÐÔ»¯ÅäÖÃÒ³ÃæµØÖ·
+    filedname å’Œdaoå±‚é‡Œé¢mapçš„keyå€¼å¯¹åº”
+linkmendproof-sql    æŸ¥çœ‹ç¼®è¯çŠ¶æ€sql
+page-config åœ°ç¨Žä¸ªæ€§åŒ–é¡µé¢
+  ecid äº‹é¡¹
+    pageå¯¹åº”çš„ä¸ªæ€§åŒ–é…ç½®é¡µé¢åœ°å€
  -->
 <linkmendproof-config>
 	<linkmendproof-server>
@@ -24,7 +24,7 @@ page-config µØË°¸öÐÔ»¯Ò³Ãæ
 		<port>1521</port>
 		<driverClass>oracle.jdbc.driver.OracleDriver</driverClass>
 	</linkmendproof-server>
-	<charge-sql value="update ta_sp_test t set t.status='ÉÉÖ¤' where t.instance_code = ?" >
+	<charge-sql value="update ta_sp_test t set t.status='ç¼®è¯' where t.instance_code = ?" >
 		<prototype type="java.lang.String.class" method="setXX" filedname="code"></prototype>
 	</charge-sql>
 	<updatecharge-sql value="update ta_sp_test t set t.is_finish=? where t.instance_code = ?" >

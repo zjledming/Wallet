@@ -5,7 +5,6 @@ import javax.servlet.ServletRequestAttributeEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.TransactionManager;
 
 import org.apache.log4j.Logger;
 
